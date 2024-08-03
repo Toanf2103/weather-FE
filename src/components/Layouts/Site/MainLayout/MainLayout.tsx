@@ -5,7 +5,7 @@ const MainLayout = () => {
   return (
     <div className="wrapper bg-gray-200 text-slate-200">
       <Header />
-      <main className="pt-10 min-h-screen duration-200">
+      <main className="pt-10 min-h-screen duration-200 bg-[#E3F2FD]">
         <Outlet />
       </main>
     </div>
