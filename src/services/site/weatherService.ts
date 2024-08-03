@@ -19,6 +19,15 @@ const weatherService = {
     })
     return data
   },
+
+  async currentByIpNetwork(ipNetwork: string) {
+    const { data } = await apiClient.get(`${this.path}/current-ip`, {
+      params: {
+        ip: ipNetwork,
+      },
+    })
+    return data
+  },
   async forecast(q: string, paginate: TPaginate) {
     const { data } = await apiClient.get(`${this.path}/forecast`, {
       params: {
