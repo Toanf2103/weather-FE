@@ -1,5 +1,6 @@
 import { TPaginate } from '@/types/site/pagination'
 import apiClient from './index'
+import { RegisterNotificationPayloads } from '@/types/site/weather'
 
 const weatherService = {
   path: '/weather',
@@ -36,6 +37,10 @@ const weatherService = {
         perPage: paginate.perPage,
       },
     })
+    return data
+  },
+  async registerNotification(payloads: RegisterNotificationPayloads) {
+    const { data } = await apiClient.post(`${this.path}/register-notifications`, payloads)
     return data
   },
 }

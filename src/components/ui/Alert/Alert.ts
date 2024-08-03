@@ -11,6 +11,14 @@ const Alert = {
       icon: icon ?? 'question',
     })
   },
+  async inputText(title: string, inputPlaceholder?: string) {
+    const result = await MySwal.fire({
+      title: title,
+      input: 'text',
+      inputPlaceholder: inputPlaceholder ?? 'Enter input',
+    })
+    return result.value
+  },
 }
 
 export default Alert

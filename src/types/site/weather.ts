@@ -21,3 +21,8 @@ export type TCondition = {
   text: string
   icon: string
 }
+
+export type RegisterNotificationPayloads = {
+  email: string
+  city: string
+}
