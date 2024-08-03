@@ -1,3 +1,4 @@
+import { TPaginate } from '@/types/site/pagination'
 import apiClient from './index'
 
 const weatherService = {
@@ -14,6 +15,16 @@ const weatherService = {
     const { data } = await apiClient.get(`${this.path}/current`, {
       params: {
         q: q,
+      },
+    })
+    return data
+  },
+  async forecast(q: string, paginate: TPaginate) {
+    const { data } = await apiClient.get(`${this.path}/forecast`, {
+      params: {
+        q: q,
+        page: paginate.page,
+        perPage: paginate.perPage,
       },
     })
     return data
