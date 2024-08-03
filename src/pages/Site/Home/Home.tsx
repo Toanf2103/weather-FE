@@ -3,6 +3,7 @@ import Alert from '@/components/ui/Alert'
 import { appConfig } from '@/config/app'
 import { useLoading } from '@/contexts/loading'
 import { cn } from '@/lib/utils'
+import ipService from '@/services/site/ipService'
 import weatherService from '@/services/site/weatherService'
 import { TRecommendCities } from '@/types/site/recommendCity'
 import { TWeather, TWeatherData } from '@/types/site/weather'
@@ -48,10 +49,10 @@ export const Home = () => {
       })
   }
 
-  const fetchWeatherForecast = () => {
+  const fetchWeatherForecast = (text?: string) => {
     showLoading()
     weatherService
-      .forecast(textSearch, paginate)
+      .forecast(text ?? textSearch, paginate)
       .then(data => {
         setPaginate({ ...paginate, page: paginate.page + 1 })
         setWeatherForecasts(prev => [...prev, ...data])
@@ -59,6 +60,41 @@ export const Home = () => {
       .catch(err => {
         console.log(err)
         Alert.alert('No data', 'Could not find the city', 'error')
+      })
+      .finally(() => {
+        hideLoading()
+      })
+  }
+
+  const fetchWeatherIp = (ipNetwork: string) => {
+    showLoading()
+    weatherService
+      .currentByIpNetwork(ipNetwork)
+      .then(data => {
+        setWeatherForecasts([])
+        setWeather(data)
+        setTextSearch(data.location.name)
+        fetchWeatherForecast(data.location.name)
+      })
+      .catch(err => {
+        console.log(err)
+        Alert.alert('No data', 'Could not find the city by your address network', 'error')
+      })
+      .finally(() => {
+        hideLoading()
+      })
+  }
+
+  const handFetchWeatherByIp = () => {
+    showLoading()
+    ipService
+      .getIpNetwork()
+      .then(data => {
+        fetchWeatherIp(data.ipString)
+      })
+      .catch(err => {
+        console.log(err)
+        Alert.alert('Error', "Don't get your address currenrt", 'error')
       })
       .finally(() => {
         hideLoading()
@@ -113,7 +149,12 @@ export const Home = () => {
           <p className="mx-4 mb-0 text-center text-black">Or</p>
         </div>
         <div>
-          <Button className="w-full bg-[#6C757D] hover:bg-neutral-500">Use Current Location</Button>
+          <Button
+            className="w-full bg-[#6C757D] hover:bg-neutral-500"
+            onClick={handFetchWeatherByIp}
+          >
+            Use Current Location
+          </Button>
         </div>
       </div>
       {weather && (
