@@ -101,6 +101,34 @@ export const Home = () => {
       })
   }
 
+  const handRegisterEmail = async () => {
+    const email = await Alert.inputText(
+      'Input your email address',
+      'Please enter your email address',
+    )
+    if (!email || weather?.location?.name === undefined) {
+      return
+    }
+    weatherService
+      .registerNotification({ email: email, city: weather?.location?.name })
+      .then(data => {
+        console.log(data)
+        Alert.alert(
+          'Register success',
+          'Register  daily weather forecast information success',
+          'success',
+        )
+      })
+      .catch(err => {
+        console.log(err)
+        Alert.alert(
+          'Register failed',
+          'Register  daily weather forecast information failed',
+          'error',
+        )
+      })
+  }
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
       <div className="p-5 col-span-1 flex flex-col gap-y-4">
@@ -173,7 +201,10 @@ export const Home = () => {
               />
             </div>
           </div>
-          <h1 className="text-black text-2xl font-bold">4-Day Forecast</h1>
+          <div className="flex justify-between">
+            <h1 className="text-black text-2xl font-bold">4-Day Forecast</h1>
+            <Button onClick={handRegisterEmail}>Get email notifications</Button>
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {weatherForecasts.map((weatherForecast, index) => (
               <CardWeather
