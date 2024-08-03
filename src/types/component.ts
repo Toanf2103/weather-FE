@@ -25,4 +25,5 @@ export type CardWeatherProps = {
   temp?: number
   wind?: number
   humidity?: number
+  icon?: string
 }

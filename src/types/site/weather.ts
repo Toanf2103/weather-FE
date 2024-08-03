@@ -10,6 +10,7 @@ export type TLocation = {
 }
 
 export type TWeather = {
+  date?: string
   temp_c: number
   condition: TCondition
   wind_mph: number
